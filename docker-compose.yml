@@ -1,0 +1,11 @@
+services:
+  kneerevive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kneerevive-api
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    restart: unless-stopped

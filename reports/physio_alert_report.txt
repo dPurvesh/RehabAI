@@ -1,0 +1,10 @@
+Physio Alert Classification Report
+==================================================
+              precision    recall  f1-score   support
+
+    NO ALERT       0.99      0.99      0.99      2604
+       ALERT       0.77      0.79      0.78        96
+
+    accuracy                           0.98      2700
+   macro avg       0.88      0.89      0.89      2700
+weighted avg       0.98      0.98      0.98      2700

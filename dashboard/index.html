@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RehabAI - Testing Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh}
+.header{background:linear-gradient(135deg,#6366f1,#8b5cf6,#06b6d4);padding:24px;text-align:center}
+.header h1{font-size:28px;font-weight:700;margin-bottom:4px}
+.header p{opacity:0.85;font-size:14px}
+.container{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:#1a2035;border:1px solid #2a3352;border-radius:12px;padding:20px}
+.card h2{font-size:16px;color:#818cf8;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px}
+.field input,.field select{background:#0f1629;border:1px solid #2a3352;color:#f1f5f9;padding:8px 10px;border-radius:6px;font-size:13px}
+.field input:focus,.field select:focus{outline:none;border-color:#6366f1}
+.btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:14px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;width:100%;margin-top:16px;transition:transform 0.2s}
+.btn:hover{transform:scale(1.02)}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-fill{background:#1e293b;border:1px solid #2a3352;padding:10px 16px;font-size:12px;margin-top:8px}
+.results{grid-column:1/-1}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.result-card{background:linear-gradient(135deg,#111827,#1a2035);border:1px solid #2a3352;border-radius:12px;padding:20px;text-align:center}
+.result-card .label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.result-card .value{font-size:32px;font-weight:700}
+.result-card .sub{font-size:12px;color:#94a3b8;margin-top:6px}
+.score-ring{width:100px;height:100px;margin:0 auto 8px}
+.prob-bar{background:#0f1629;border-radius:4px;height:8px;margin:4px 0;overflow:hidden}
+.prob-fill{height:100%;border-radius:4px;transition:width 0.5s}
+.prob-label{display:flex;justify-content:space-between;font-size:11px;color:#94a3b8}
+.error-box{background:#3b1525;border:1px solid #f43f5e;color:#fda4af;padding:12px;border-radius:8px;margin-top:16px;font-size:13px}
+.alert-banner{background:linear-gradient(135deg,#dc2626,#f43f5e);padding:16px;border-radius:12px;text-align:center;font-weight:600;animation:pulse 2s infinite;grid-column:1/-1}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
+.status{position:fixed;top:10px;right:10px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600}
+.status.ok{background:#065f46;color:#6ee7b7}
+.status.err{background:#7f1d1d;color:#fca5a5}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>RehabAI</h1>
+<p>ML Prediction Testing Dashboard | 10 Knee Injuries | 6 Models</p>
+</div>
+<div id="status" class="status">Checking...</div>
+<div class="container">
+<div class="card">
+<h2>Patient Profile</h2>
+<div class="form-grid">
+<div class="field"><label>Age</label><input type="number" id="age" value="32"></div>
+<div class="field"><label>Gender</label><select id="gender"><option>male</option><option>female</option><option>other</option></select></div>
+<div class="field"><label>Weight (kg)</label><input type="number" id="weight_kg" value="78" step="0.1"></div>
+<div class="field"><label>Height (cm)</label><input type="number" id="height_cm" value="178" step="0.1"></div>
+<div class="field"><label>BMI</label><input type="number" id="bmi" value="24.6" step="0.1"></div>
+<div class="field"><label>Injury Type</label><select id="injury_type"><option>acl_tear</option><option>pcl_tear</option><option>mcl_tear</option><option>lcl_tear</option><option>meniscus_tear</option><option>knee_replacement</option><option>patellar_tendon</option><option>knee_fracture</option><option>osteoarthritis</option><option>knee_dislocation</option></select></div>
+<div class="field"><label>Surgery</label><select id="surgery_type"><option>acl_reconstruction</option><option>pcl_reconstruction</option><option>ligament_repair</option><option>meniscectomy</option><option>meniscus_repair</option><option>total_knee_replacement</option><option>partial_knee_replacement</option><option>tendon_repair</option><option>fracture_fixation</option><option>arthroscopy</option><option>conservative_treatment</option><option>osteotomy</option></select></div>
+<div class="field"><label>Severity</label><select id="severity"><option>mild</option><option selected>moderate</option><option>severe</option></select></div>
+<div class="field"><label>Comorbidity</label><select id="comorbidity"><option>none</option><option>diabetes</option><option>hypertension</option><option>obesity</option><option>osteoporosis</option></select></div>
+<div class="field"><label>Activity</label><select id="activity"><option>sedentary</option><option>moderate</option><option selected>active</option><option>athlete</option></select></div>
+<div class="field"><label>Graft Type</label><select id="graft_type"><option selected>autograft</option><option>allograft</option><option>synthetic</option><option>none</option></select></div>
+<div class="field"><label>Affected Side</label><select id="affected_side"><option selected>right</option><option>left</option><option>bilateral</option></select></div>
+</div>
+</div>
+<div class="card">
+<h2>Daily Check-in</h2>
+<div class="form-grid">
+<div class="field"><label>Day Number</label><input type="number" id="day_number" value="30"></div>
+<div class="field"><label>Pain (0-10)</label><input type="number" id="pain_level" value="3.5" step="0.1"></div>
+<div class="field"><label>Swelling (1-5)</label><input type="number" id="swelling_level" value="2"></div>
+<div class="field"><label>Stiffness (1-5)</label><input type="number" id="stiffness_level" value="2"></div>
+<div class="field"><label>Exercise %</label><input type="number" id="exercises_completed_percent" value="82"></div>
+<div class="field"><label>Duration (min)</label><input type="number" id="exercise_duration_mins" value="30"></div>
+<div class="field"><label>Difficulty (1-5)</label><input type="number" id="exercise_difficulty" value="2"></div>
+<div class="field"><label>Steps</label><input type="number" id="steps_walked" value="2800"></div>
+<div class="field"><label>Sleep (hrs)</label><input type="number" id="sleep_hours" value="7.5" step="0.1"></div>
+<div class="field"><label>Sleep Quality (1-5)</label><input type="number" id="sleep_quality" value="4"></div>
+<div class="field"><label>Woken Up</label><input type="number" id="times_woken_up" value="1"></div>
+<div class="field"><label>Rested (1-5)</label><input type="number" id="rested_feeling" value="4"></div>
+<div class="field"><label>Fatigue (1-10)</label><input type="number" id="fatigue_level" value="3"></div>
+<div class="field"><label>Mood (1-5)</label><input type="number" id="mood_score" value="4"></div>
+<div class="field"><label>Medication</label><select id="medication_taken"><option value="0" selected>No</option><option value="1">Yes</option></select></div>
+<div class="field"><label>Physio Today</label><select id="physio_session_today"><option value="0">No</option><option value="1" selected>Yes</option></select></div>
+<div class="field"><label>Independence (1-5)</label><input type="number" id="independence_level" value="3"></div>
+<div class="field"><label>Ice Applied</label><select id="ice_applied_today"><option value="0">No</option><option value="1" selected>Yes</option></select></div>
+</div>
+</div>
+<div class="card">
+<h2>Clinical Metrics</h2>
+<div class="form-grid">
+<div class="field"><label>ROM Flexion</label><input type="number" id="range_of_motion_flexion" value="85" step="0.1"></div>
+<div class="field"><label>ROM Extension Deficit</label><input type="number" id="range_of_motion_extension" value="3" step="0.1"></div>
+<div class="field"><label>Strength (1-5)</label><input type="number" id="muscle_strength_score" value="3"></div>
+<div class="field"><label>Balance (1-5)</label><input type="number" id="balance_score" value="3"></div>
+<div class="field"><label>Gait Status</label><select id="gait_status"><option>non_weight_bearing</option><option selected>partial</option><option>full_assisted</option><option>independent</option></select></div>
+<div class="field"><label>Mobility Score</label><input type="number" id="functional_mobility_score" value="55" step="0.1"></div>
+<div class="field"><label>Quad Activation (1-5)</label><input type="number" id="quad_activation_score" value="3"></div>
+<div class="field"><label>Brace</label><select id="brace_status"><option>locked_extension</option><option selected>hinged_limited</option><option>hinged_full</option><option>none</option></select></div>
+</div>
+</div>
+<div class="card">
+<h2>Trends & Status</h2>
+<div class="form-grid">
+<div class="field"><label>Pain Trend (7d)</label><input type="number" id="pain_trend_7day" value="-0.4" step="0.1"></div>
+<div class="field"><label>Exercise Trend (7d)</label><input type="number" id="exercise_trend_7day" value="5.2" step="0.1"></div>
+<div class="field"><label>Sleep Trend (7d)</label><input type="number" id="sleep_trend_7day" value="0.2" step="0.1"></div>
+<div class="field"><label>In Relapse</label><select id="in_relapse"><option value="0" selected>No</option><option value="1">Yes</option></select></div>
+</div>
+<button class="btn" onclick="runPrediction()">Run Prediction</button>
+<div id="error" class="error-box hidden"></div>
+</div>
+<div class="card results hidden" id="resultsSection">
+<h2>Prediction Results</h2>
+<div id="alertBanner" class="alert-banner hidden">PHYSIO ALERT - Contact your physiotherapist immediately!</div>
+<div class="results-grid" id="resultsGrid"></div>
+</div>
+</div>
+<script>
+const API = '';
+const fields = ['age','gender','weight_kg','height_cm','bmi','injury_type','surgery_type','severity',
+'comorbidity','activity','graft_type','affected_side','day_number','pain_level','swelling_level',
+'stiffness_level','exercises_completed_percent','exercise_duration_mins','exercise_difficulty',
+'steps_walked','sleep_hours','sleep_quality','times_woken_up','rested_feeling','fatigue_level',
+'mood_score','medication_taken','physio_session_today','independence_level','ice_applied_today',
+'range_of_motion_flexion','range_of_motion_extension','muscle_strength_score','balance_score',
+'gait_status','functional_mobility_score','quad_activation_score','brace_status',
+'pain_trend_7day','exercise_trend_7day','sleep_trend_7day','in_relapse'];
+
+fetch(API+'/api/health').then(r=>r.json()).then(d=>{
+    const s=document.getElementById('status');
+    s.textContent=d.status==='ok'?'API Online':'API Error';
+    s.className='status '+(d.status==='ok'?'ok':'err');
+}).catch(()=>{document.getElementById('status').textContent='API Offline';document.getElementById('status').className='status err'});
+
+function runPrediction(){
+    const data={};
+    fields.forEach(f=>{const el=document.getElementById(f);if(!el)return;
+        const v=el.value;data[f]=el.tagName==='SELECT'&&!isNaN(v)?Number(v):
+        (el.type==='number'?Number(v):v)});
+    document.getElementById('error').classList.add('hidden');
+    const btn=document.querySelector('.btn');btn.disabled=true;btn.textContent='Predicting...';
+    fetch(API+'/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    .then(r=>r.json()).then(d=>{
+        btn.disabled=false;btn.textContent='Run Prediction';
+        if(d.status==='error'){document.getElementById('error').textContent=d.errors?d.errors.join(', '):d.message;
+            document.getElementById('error').classList.remove('hidden');return}
+        showResults(d.predictions);
+    }).catch(e=>{btn.disabled=false;btn.textContent='Run Prediction';
+        document.getElementById('error').textContent='Connection failed: '+e.message;
+        document.getElementById('error').classList.remove('hidden')});
+}
+
+function showResults(p){
+    document.getElementById('resultsSection').classList.remove('hidden');
+    const ab=document.getElementById('alertBanner');
+    ab.classList.toggle('hidden',!p.physio_alert);
+    const sc=p.recovery_score||0,rk=p.risk_level||'?',rt=p.recovery_rate||'?',
+        dr=p.days_remaining||'?',ph=p.rehab_phase||'?',ac=p.physio_alert_confidence||0;
+    const riskColors={LOW:'#10b981',MEDIUM:'#f59e0b',HIGH:'#f43f5e'};
+    const phaseColors={PROTECTION:'#f43f5e',MOBILITY:'#f59e0b',STRENGTHENING:'#06b6d4',FUNCTIONAL:'#10b981'};
+    let html=`<div class="result-card"><div class="label">Recovery Score</div>
+        <svg class="score-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#1e293b" stroke-width="8"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="${sc>=70?'#10b981':sc>=40?'#f59e0b':'#f43f5e'}"
+        stroke-width="8" stroke-dasharray="${sc*2.64} 264" stroke-linecap="round" transform="rotate(-90 50 50)"
+        style="transition:stroke-dasharray 1s"/><text x="50" y="55" text-anchor="middle" fill="#f1f5f9"
+        font-size="22" font-weight="700">${sc}</text></svg><div class="sub">out of 100</div></div>`;
+    html+=`<div class="result-card"><div class="label">Risk Level</div>
+        <div class="value" style="color:${riskColors[rk]||'#fff'}">${rk}</div>`;
+    if(p.risk_probabilities){Object.entries(p.risk_probabilities).forEach(([k,v])=>{
+        html+=`<div class="prob-label"><span>${k}</span><span>${(v*100).toFixed(1)}%</span></div>
+        <div class="prob-bar"><div class="prob-fill" style="width:${v*100}%;background:${riskColors[k]}"></div></div>`})}
+    html+=`</div>`;
+    html+=`<div class="result-card"><div class="label">Recovery Rate</div><div class="value" style="color:#06b6d4">${rt}</div></div>`;
+    html+=`<div class="result-card"><div class="label">Days Remaining</div><div class="value" style="color:#818cf8">${dr}</div><div class="sub">days to full recovery</div></div>`;
+    html+=`<div class="result-card"><div class="label">Rehab Phase</div><div class="value" style="font-size:20px;color:${phaseColors[ph]||'#fff'}">${ph}</div></div>`;
+    html+=`<div class="result-card"><div class="label">Physio Alert</div>
+        <div class="value" style="color:${p.physio_alert?'#f43f5e':'#10b981'}">${p.physio_alert?'ALERT':'ALL CLEAR'}</div>
+        <div class="sub">Confidence: ${(ac*100).toFixed(1)}%</div></div>`;
+    document.getElementById('resultsGrid').innerHTML=html;
+    document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

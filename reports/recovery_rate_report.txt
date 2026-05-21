@@ -1,0 +1,11 @@
+Recovery Rate Classification Report
+==================================================
+              precision    recall  f1-score   support
+
+        SLOW       0.97      0.94      0.95       201
+      NORMAL       0.91      0.89      0.90       346
+        FAST       0.98      0.99      0.99      2153
+
+    accuracy                           0.97      2700
+   macro avg       0.95      0.94      0.95      2700
+weighted avg       0.97      0.97      0.97      2700

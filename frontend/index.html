@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RehabAI - Intelligent Rehabilitation Platform</title>
+  <meta name="description" content="RehabAI is an AI-powered rehabilitation platform with clinical recovery analytics, guided exercise workflows, and report-aware assistant support.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app/css/styles.css">
+</head>
+<body>
+  <div id="auth-screen" class="auth-screen">
+    <!-- Animated background -->
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+      <div class="hero-grid-lines"></div>
+    </div>
+
+    <div class="hero-layout">
+      <!-- Left: Hero content -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          AI-Powered Rehabilitation
+        </div>
+        <h1 class="hero-title">
+          Your knee recovery,<br>
+          <span class="hero-gradient-text">guided by intelligence.</span>
+        </h1>
+        <p class="hero-desc">
+          RehabAI combines 6 ML models, Voice AI coaching, and Gemini AI to create a complete clinical rehabilitation journey — from diagnosis to full recovery.
+        </p>
+
+        <div class="hero-features">
+          <div class="hero-feature">
+            <div class="hero-feature-icon"><i data-lucide="brain"></i></div>
+            <div>
+              <strong>6 ML Models</strong>
+              <span>Score, risk, phase, rate prediction</span>
+            </div>
+          </div>
+          <div class="hero-feature">
+            <div class="hero-feature-icon"><i data-lucide="mic"></i></div>
+            <div>
+              <strong>Voice AI Coach</strong>
+              <span>Speak & get instant workout plans</span>
+            </div>
+          </div>
+          <div class="hero-feature">
+            <div class="hero-feature-icon"><i data-lucide="sparkles"></i></div>
+            <div>
+              <strong>Gemini AI Chat</strong>
+              <span>Context-aware rehab assistant</span>
+            </div>
+          </div>
+          <div class="hero-feature">
+            <div class="hero-feature-icon"><i data-lucide="trophy"></i></div>
+            <div>
+              <strong>RPG Gamification</strong>
+              <span>Level up your recovery journey</span>
+            </div>
+          </div>
+        </div>
+
+          <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-num">10</span>
+            <span class="hero-stat-label">Injury types</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">6</span>
+            <span class="hero-stat-label">ML models</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">AI</span>
+            <span class="hero-stat-label">Voice Coach</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">RPG</span>
+            <span class="hero-stat-label">Gamification</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Login card -->
+      <section class="auth-panel">
+        <div class="auth-brand">
+          <div class="auth-logo"><i data-lucide="heart-pulse"></i></div>
+          <h2 class="auth-title">RehabAI</h2>
+          <p class="auth-subtitle">Intelligent rehabilitation workspace</p>
+        </div>
+        <div id="auth-form-container"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="onboarding-screen" class="onboarding-screen hidden">
+    <div class="onboarding-container">
+      <div class="onboarding-header">
+        <h2>Set Up Your Medical Profile</h2>
+        <p>RehabAI uses your clinical context to personalize recovery predictions and plan recommendations.</p>
+        <div class="progress-bar"><div id="onboarding-progress" class="progress-fill" style="width:33%"></div></div>
+        <div class="step-indicators">
+          <span id="step-ind-1" class="step-dot active">1</span>
+          <span id="step-ind-2" class="step-dot">2</span>
+          <span id="step-ind-3" class="step-dot">3</span>
+        </div>
+      </div>
+      <div id="onboarding-content"></div>
+    </div>
+  </div>
+
+  <div id="app-layout" class="app-layout hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo"><i data-lucide="heart-pulse"></i></div>
+        <span class="sidebar-title">RehabAI</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-page="dashboard">
+          <i data-lucide="layout-dashboard"></i><span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#checkin" class="nav-item" data-page="checkin">
+          <i data-lucide="clipboard-check"></i><span class="nav-label">Daily Check-in</span>
+        </a>
+        <a href="#voicecoach" class="nav-item" data-page="voicecoach">
+          <i data-lucide="mic"></i><span class="nav-label">Voice Coach</span>
+        </a>
+        <a href="#rpg" class="nav-item" data-page="rpg">
+          <i data-lucide="trophy"></i><span class="nav-label">RPG Stats</span>
+        </a>
+        <a href="#meals" class="nav-item" data-page="meals">
+          <i data-lucide="utensils"></i><span class="nav-label">Meal Planner</span>
+        </a>
+        <a href="#chat" class="nav-item" data-page="chat">
+          <i data-lucide="bot"></i><span class="nav-label">AI Assistant</span>
+        </a>
+        <a href="#progress" class="nav-item" data-page="progress">
+          <i data-lucide="trending-up"></i><span class="nav-label">Progress</span>
+        </a>
+        <a href="#journey" class="nav-item" data-page="journey">
+          <i data-lucide="map"></i><span class="nav-label">Journey</span>
+        </a>
+        <div class="nav-divider"></div>
+        <a href="#report" class="nav-item" data-page="report">
+          <i data-lucide="file-text"></i><span class="nav-label">Medical Report</span>
+        </a>
+        <a href="#emergency" class="nav-item" data-page="emergency">
+          <i data-lucide="siren"></i><span class="nav-label">Emergency</span>
+        </a>
+        <a href="#profile" class="nav-item" data-page="profile">
+          <i data-lucide="user-round"></i><span class="nav-label">Profile</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="sidebar-tutorial" class="btn-tutorial"><i data-lucide="circle-help"></i><span>Tutorial</span></button>
+        <button id="sidebar-signout" class="btn-signout">Sign Out</button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <button id="tutorial-fab" class="tutorial-fab" title="Open tutorial"><i data-lucide="circle-help"></i></button>
+      <div id="page-content"></div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/app/js/supabase.js?v=2"></script>
+  <script src="/app/js/api.js?v=3"></script>
+  <script src="/app/js/tutorial.js?v=2"></script>
+  <script src="/app/js/pdfExport.js?v=2"></script>
+  <script src="/app/js/pages/login.js?v=2"></script>
+  <script src="/app/js/pages/onboarding.js?v=3"></script>
+  <script src="/app/js/pages/dashboard.js?v=2"></script>
+  <script src="/app/js/pages/checkin.js?v=4"></script>
+  <script src="/app/js/pages/voiceCoach.js?v=2"></script>
+  <script src="/app/js/pages/rpgDashboard.js?v=2"></script>
+  <script src="/app/js/pages/mealPlanner.js?v=3"></script>
+  <script src="/app/js/pages/chat.js?v=3"></script>
+  <script src="/app/js/pages/progress.js?v=2"></script>
+  <script src="/app/js/pages/journey.js?v=2"></script>
+  <script src="/app/js/pages/report.js?v=2"></script>
+  <script src="/app/js/pages/emergency.js?v=2"></script>
+  <script src="/app/js/pages/profile.js?v=4"></script>
+  <script src="/app/js/pages/physioOnboarding.js?v=2"></script>
+  <script src="/app/js/pages/physioDashboard.js?v=3"></script>
+  <script src="/app/js/app.js?v=2"></script>
+</body>
+</html>
